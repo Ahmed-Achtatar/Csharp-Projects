@@ -6,7 +6,10 @@ using System.Threading.Tasks;
 
 namespace ConsoleGame
 {
-    class Place
+    class Place : Entity
     {
+        /// VARIABLES
+        /// ---------------------------------------------
+
     }
 }
