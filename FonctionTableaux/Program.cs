@@ -1,5 +1,5 @@
 ﻿using System;
-
+using System.Collections.Generic;
 namespace FonctionTableaux
 {
     class Program
@@ -30,48 +30,52 @@ namespace FonctionTableaux
             {
                 Tstr = new string[dimension];
             }
-            if (dataType == "int")
+            else if (dataType == "int")
             {
                 Tint = new int[dimension];
             }
-            if (dataType == "double")
+            else if (dataType == "double")
             {
                 Tdouble = new double[dimension];
             }
-            if (dataType == "bool")
+            else if (dataType == "bool")
             {
                 Tbool = new bool[dimension];
             }
         }
         public void Inserer(string val)
         {
-            if (DataType == "string") { 
-            for (int i = 0; i < Tstr.Length; i++)
+            if (DataType == "string")
             {
-                if(Tstr[i] != null) { 
-                    this.Tstr[i] = val;
-                    break;
+                for (int i = 0; i < Tstr.Length; i++)
+                {
+                    if (Tstr[i] != null)
+                    {
+                        this.Tstr[i] = val;
+                        break;
+                    }
                 }
             }
-            }
-            else if (DataType == "string")
+
+        }
+            
+        public bool Inserer(int val)
+        {
+            bool insertComplete = false; 
+            if (DataType == "int")
             {
-
-            }
-            else if (DataType == "int")
-            {
-
-            }
-            else if (DataType == "double")
-            {
-
-            }
-            else if (DataType == "bool")
-            {
-
+                for (int i = 0; i < Tint.Length; i++)
+                {
+                    bool isExist = String.IsNullOrEmpty(Tint[i].ToString());
+                    if (!isExist)
+                    {
+                        this.Tint[i] = val;
+                        insertComplete = true;
+                    }
+                }
             }
 
-
+            return insertComplete;
         }
         public void supprimer(string val)
         {
@@ -82,22 +86,7 @@ namespace FonctionTableaux
                     this.Tstr[i] = null;
                 }
         }
-                        else if (DataType == "string")
-            {
 
-            }
-            else if (DataType == "int")
-            {
-
-            }
-            else if (DataType == "double")
-            {
-
-            }
-            else if (DataType == "bool")
-            {
-
-            }
         }
         public void modifier(string valTrouv,string valchang)
         {
@@ -108,22 +97,7 @@ namespace FonctionTableaux
                     this.Tstr[i] = valchang;
                 }
             }
-                        else if (DataType == "string")
-        {
 
-        }
-        else if (DataType == "int")
-        {
-
-        }
-        else if (DataType == "double")
-        {
-
-        }
-        else if (DataType == "bool")
-        {
-
-        }
     }
         public int Trouver(string valTrouv) {
             int pos = 0;
@@ -136,21 +110,7 @@ namespace FonctionTableaux
                 }
             }
                         else if (DataType == "string")
-        {
 
-        }
-        else if (DataType == "int")
-        {
-
-        }
-        else if (DataType == "double")
-        {
-
-        }
-        else if (DataType == "bool")
-        {
-
-        }
         return pos;
         }
         public bool Istrouv(string valTrouv) {
@@ -163,22 +123,7 @@ namespace FonctionTableaux
                     break;
                 }
             }
-                        else if (DataType == "string")
-        {
 
-        }
-        else if (DataType == "int")
-        {
-
-        }
-        else if (DataType == "double")
-        {
-
-        }
-        else if (DataType == "bool")
-        {
-
-        }
         return resultat;
         }
         public void Fusionner()
