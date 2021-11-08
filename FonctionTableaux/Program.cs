@@ -7,50 +7,181 @@ namespace FonctionTableaux
         static void Main(string[] args)
         {
             Console.WriteLine("Hello World!");
-            insere()
-            insere()
+
         }
 
     }
     class Tableau
     {
         // LES ATTRIBUTS
-        private string[] Tstr;
-        private int[] Tint;
-        private double[] Tdbl;
-        private bool[] Tbool;
-        private int Dimension;
+        public string[] Tstr { get; private set; }
+        public int[] Tint { get; private set; }
+        public double[] Tdouble { get; private set; }
+        public bool[] Tbool { get; private set; }
+        public string DataType { get; private set; }
+ 
 
 
 
         // LES METHODS
-        public Tableau(a, int dimension)
+        public Tableau(string dataType, int dimension)
         {
-        this.Dimension = dimension;
-
+            if (dataType == "string")
+            {
+                Tstr = new string[dimension];
+            }
+            if (dataType == "int")
+            {
+                Tint = new int[dimension];
+            }
+            if (dataType == "double")
+            {
+                Tdouble = new double[dimension];
+            }
+            if (dataType == "bool")
+            {
+                Tbool = new bool[dimension];
+            }
         }
-        public void inserer(string val)
+        public void Inserer(string val)
         {
-            for (int i = 0; i < Dimension; i++)
+            if (DataType == "string") { 
+            for (int i = 0; i < Tstr.Length; i++)
             {
                 if(Tstr[i] != null) { 
                     this.Tstr[i] = val;
                     break;
                 }
             }
+            }
+            else if (DataType == "string")
+            {
+
+            }
+            else if (DataType == "int")
+            {
+
+            }
+            else if (DataType == "double")
+            {
+
+            }
+            else if (DataType == "bool")
+            {
+
+            }
+
+
         }
-        public void supprimer()
+        public void supprimer(string val)
+        {
+            for (int i = 0; i < Dimension; i++)
+            {
+                if (Tstr[i] == typeof()val)
+                {
+                    this.Tstr[i] = null;
+                }
+        }
+                        else if (DataType == "string")
+            {
+
+            }
+            else if (DataType == "int")
+            {
+
+            }
+            else if (DataType == "double")
+            {
+
+            }
+            else if (DataType == "bool")
+            {
+
+            }
+        }
+        public void modifier(string valTrouv,string valchang)
+        {
+            for (int i = 0; i < Dimension; i++)
+            {
+                if (Tstr[i] == valTrouv)
+                {
+                    this.Tstr[i] = valchang;
+                }
+            }
+                        else if (DataType == "string")
         {
 
         }
-        public void modifier()
+        else if (DataType == "int")
         {
 
         }
-        public void trouver() { 
-            
+        else if (DataType == "double")
+        {
+
         }
-        public void fusionner()
+        else if (DataType == "bool")
+        {
+
+        }
+    }
+        public int Trouver(string valTrouv) {
+            int pos = 0;
+            for (int i = 0; i < Dimension; i++)
+            {
+                if (this.Tstr[i] == valTrouv)
+                {
+                    pos = i;
+                    break;
+                }
+            }
+                        else if (DataType == "string")
+        {
+
+        }
+        else if (DataType == "int")
+        {
+
+        }
+        else if (DataType == "double")
+        {
+
+        }
+        else if (DataType == "bool")
+        {
+
+        }
+        return pos;
+        }
+        public bool Istrouv(string valTrouv) {
+            bool resultat = false;
+            for (int i = 0; i < Dimension; i++)
+            {
+                if (Tstr[i] == valTrouv)
+                {
+                    resultat = true;
+                    break;
+                }
+            }
+                        else if (DataType == "string")
+        {
+
+        }
+        else if (DataType == "int")
+        {
+
+        }
+        else if (DataType == "double")
+        {
+
+        }
+        else if (DataType == "bool")
+        {
+
+        }
+        return resultat;
+        }
+        public void Fusionner()
         {
 
         }
@@ -58,9 +189,17 @@ namespace FonctionTableaux
         {
 
         }
-        public void nbrOccurence()
+        public int NbrOccurence(string valTrouv)
         {
-
+            int compte = 0 ;
+            for (int i = 0; i < Dimension; i++)
+            {
+                if (Tstr[i] == valTrouv)
+                {
+                    compte++;
+                }
+            }
+            return compte;
         }
         public void Concatener()
         {
