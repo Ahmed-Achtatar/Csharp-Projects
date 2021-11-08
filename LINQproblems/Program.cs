@@ -9,23 +9,23 @@ namespace LINQproblems
 
         static void Main(string[] args)
         {
-            // LIST OF STRINGS
+            // LIST OF STRINGS -------------------------------------------------
             var listOfStrings = new List<string>() 
             { "Ahmed", "Ali", "Assaad", "Oualid","Brahim",
                 "Omar", "Hassan", "Hamid", "Anouar", "Farah",
                 "Bousheta", "Houssam", "Hamza", "Imad", "Mouad", "Abdelilah" 
             };
-            // LIST OF INTS
+            // LIST OF INTS -------------------------------------------------
             var listOfInts = new List<int>() {1,277,0,-7,-888,-9,-16,392,2020,2021};
 
-            // LIST OF DOUBLES
+            // LIST OF DOUBLES -------------------------------------------------
             var listOfDoubles = new List<double>() 
             {
                 22.22,-11.11,9922.11,-100022.1,
                 88.00,88.01,0,99,16 
             };
 
-            // LISTS OF OBJECTS
+            // LISTS OF OBJECTS -------------------------------------------------
             var listOfPeople = new List<People>()
             {
              new People("Ahmed",20,17.0,Gender.Male),
@@ -49,7 +49,12 @@ namespace LINQproblems
             new People("Smail",48,2,Gender.Male),
             };
 
-            Console.WriteLine("Hello World!");
+            // LinQ -------------------------------------------------
+            // var numPos = from i in listOfInts
+            //          where i >= 0
+            //        select i;
+            // Lambda:
+            var numPos = listOfInts.Where(i => i >= 0).Select(i => i);
         }
 
     }
