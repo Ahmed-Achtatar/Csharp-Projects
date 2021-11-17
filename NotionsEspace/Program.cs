@@ -1,15 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
-namespace FonctionTableaux
+
+namespace NotionsEspace
 {
     class Program
     {
         static void Main(string[] args)
         {
-            
+            Point P1;
+            Point P2;
+
         }
-
     }
-    
 }
-
