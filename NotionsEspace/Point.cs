@@ -19,6 +19,12 @@ namespace NotionsEspace
             this.Y = y;
             this.Z = z;
         }
+        public Point(double x, double y)
+        {
+            this.X = x;
+            this.Y = y;
+            this.Z = 0;
+        }
         public double Distance(Point P2)
         {
             double dist = Math.Sqrt((Math.Pow(this.X - P2.X, 2) + Math.Pow(this.Y - P2.Y, 2) + Math.Pow(this.Z - P2.Z, 2)));
@@ -28,10 +34,6 @@ namespace NotionsEspace
         public double Distance(Circle C1)
         {
             double dist;
-            if ( = )
-            {
-
-            }
             dist = this.Distance(C1.Centre) - C1.Diam;
             return dist;
         }
@@ -43,29 +45,6 @@ namespace NotionsEspace
             }
             else return false;
         }
-        public bool appartient(Droit D1)
-        {
-            if (this.Egal(D1.P1) && this.Egal(D1.P2))
-            {
-                return true;
-            }
-            else return false;
-        }
-        public bool appartient(Circle C1)
-        {
-            if (this.Distance(C1.Centre) == C1.Diam)
-            {
-                return true;
-            }
-            else return false;
-        }
-        public bool appartient(Ellipse E1)
-        {
-            if (this.Distance(E1.Centre) == E1.Diam)
-            {
-                return true;
-            }
-            else return false;
-        }
+
     }
 }
