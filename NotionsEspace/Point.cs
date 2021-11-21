@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace NotionsEspace
 {
     class Point
-    {
+    #
         // Attributs
         public double X { get; set; }
         public double Y { get; set; }
