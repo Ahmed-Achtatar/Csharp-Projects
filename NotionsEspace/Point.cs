@@ -27,7 +27,13 @@ namespace NotionsEspace
         }
         public double Distance(Circle C1)
         {
+            double dist;
+            if ( = )
+            {
 
+            }
+            dist = this.Distance(C1.Centre) - C1.Diam;
+            return dist;
         }
         public bool Egal(Point P2)
         {
@@ -53,9 +59,9 @@ namespace NotionsEspace
             }
             else return false;
         }
-        public bool appartient(Ellipse C1)
+        public bool appartient(Ellipse E1)
         {
-            if (this.Distance(C1.Centre) == C1.Diam)
+            if (this.Distance(E1.Centre) == E1.Diam)
             {
                 return true;
             }
