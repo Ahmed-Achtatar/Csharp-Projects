@@ -12,7 +12,9 @@ namespace WindowsFormsApp1
 {
     public partial class Form1 : Form
     {
+        // Les actions en cours
         enum action { ADDING, DELETING, MODIFYING }
+        // Connection String
         static string oradb = "Data Source =(DESCRIPTION =" +
             "(ADDRESS = (PROTOCOL = TCP)(HOST = localhost)(PORT = 1521))" +
             "(CONNECT_DATA =" +
@@ -20,10 +22,14 @@ namespace WindowsFormsApp1
             "(SERVICE_NAME = orcl)));" +
             "User Id=c##usernam;" +
             "Password=password;";
+        // Instantiation du connection à la base de données de oracle
         OracleConnection conn = new OracleConnection(oradb);
+        // Instantiation du commande
         OracleCommand cmd = new OracleCommand(oradb);
+        // l'Action en cours
         int currentaction;
 
+        // Constructeur de la forme
         public Form1()
         {
             InitializeComponent();
@@ -33,17 +39,23 @@ namespace WindowsFormsApp1
             conn.Close();
 
         }
-
+        //
         private void listEtudiant_SelectedIndexChanged(object sender, EventArgs e)
         {
+
+            
             BackToVisualisation();
             conn.Open();
+
+            // REQUETE SQL
+
             cmd.CommandText = "Select nom,prenom,note,ville FROM students WHERE idstudent = " + listEtudiant.SelectedItem.ToString();
             OracleDataReader dr = cmd.ExecuteReader();
             if (dr.HasRows)
             {
                 while (dr.Read())
                 {
+                    // AJOUT DE DONNEES DANS LES TEXTBOXS
                     nomTxtBox.Text = dr["nom"].ToString();
                     prenomTextBox.Text = dr["prenom"].ToString();
                     noteTextBox.Text = dr["note"].ToString();
@@ -67,9 +79,11 @@ namespace WindowsFormsApp1
         private void Valider_Click(object sender, EventArgs e)
         {
             conn.Open();
+
+            // ETAT D AJOUT
             if (currentaction == (int)action.ADDING)
             {
-                
+                // SI TOUT LES TEXTBOX SONT REMPLIS
                 if (!(string.IsNullOrEmpty(nomTxtBox.Text) || string.IsNullOrEmpty(prenomTextBox.Text) || string.IsNullOrEmpty(noteTextBox.Text)))
                 {
                     cmd.CommandText = "Insert into students(idstudent, nom, prenom, note, ville) Values(STUD_SEQ.nextval,'" +
@@ -87,6 +101,8 @@ namespace WindowsFormsApp1
                     Message.ForeColor = System.Drawing.Color.Red;
                 }
             }
+
+            // ETAT DE SUPPRESSION
             if (currentaction == (int)action.DELETING)
             {
                 cmd.CommandText = "Delete from students where idstudent =" + listEtudiant.SelectedItem.ToString();
@@ -94,9 +110,11 @@ namespace WindowsFormsApp1
                 Updatelist();
                 BackToVisualisation();
             }
+
+            // ETAT DE MODIFICATION
             if (currentaction == (int)action.MODIFYING)
             {
-
+                // SI LES TEXTBOX SONT TOUS REMPLIS
                 if (!(string.IsNullOrEmpty(nomTxtBox.Text) || string.IsNullOrEmpty(prenomTextBox.Text) || string.IsNullOrEmpty(noteTextBox.Text)))
                 {
                     cmd.CommandText = "Update students set " + 
@@ -126,11 +144,13 @@ namespace WindowsFormsApp1
         private void Supprimer_Click(object sender, EventArgs e)
         {
             GoToVisualisation();
+            // CHANGEMENT D ETAT DE BUTTONS ET BOXS 
             nomTxtBox.Enabled = false;
             prenomTextBox.Enabled = false;
             noteTextBox.Enabled = false;
             villeTextBox.Enabled = false;
             listEtudiant.Enabled = false;
+            // CHANGEMENT D ACTION
             currentaction = (int)action.DELETING;
             Message.Text = "Cliquer sur Valider pour confirmer la suppression";
             Message.ForeColor = System.Drawing.Color.Black;
@@ -139,24 +159,32 @@ namespace WindowsFormsApp1
         private void Modifier_Click(object sender, EventArgs e)
         {
             GoToVisualisation();
+            // CHANGEMENT D ETAT DE BUTTONS ET BOXS
             nomTxtBox.Enabled = true;
             prenomTextBox.Enabled = true;
             noteTextBox.Enabled = true;
             villeTextBox.Enabled = true;
             listEtudiant.Enabled = false;
+            // CHANGEMENT D ACTION
             currentaction = (int)action.MODIFYING;
+            Message.Text = "Cliquer sur Valider pour confirmer la modification";
+            Message.ForeColor = System.Drawing.Color.Black;
         }
 
         private void Ajouter_Click(object sender, EventArgs e)
         {
             GoToVisualisation();
             CleanTxtBoxes();
+            // CHANGEMENT D ETAT DE BUTTONS ET BOXS
             nomTxtBox.Enabled = true;
             prenomTextBox.Enabled = true;
             noteTextBox.Enabled = true;
             villeTextBox.Enabled = true;
             listEtudiant.Enabled = false;
+            // CHANGEMENT D ACTION
             currentaction = (int)action.ADDING;
+            Message.Text = "Cliquer sur Valider pour confirmer l'ajout";
+            Message.ForeColor = System.Drawing.Color.Black;
         }
         private void CleanTxtBoxes()
         {
@@ -165,8 +193,9 @@ namespace WindowsFormsApp1
             noteTextBox.Text = "";
             villeTextBox.Text = "";
         }
-        private void GoToVisualisation()
+        private void GoFromVisualisation()
         {
+            // QUITTER ETAT DE VISUALISATION
             Valider.Enabled = true;
             Annuler.Enabled = true;
             Supprimer.Enabled = false;
@@ -175,6 +204,7 @@ namespace WindowsFormsApp1
         }
         private void BackToVisualisation()
         {
+            // VERS ETAT DE VISUALISATION
             Valider.Enabled = false;
             Annuler.Enabled = false;
 
@@ -200,6 +230,7 @@ namespace WindowsFormsApp1
         }
         void Updatelist()
         {
+            // REFLECHIR LE COMBOBOX
             listEtudiant.Items.Clear();
             cmd.CommandText = "select * from students";
             cmd.Connection = conn;
