@@ -16,7 +16,6 @@ namespace FonctionTableaux
 
 
 
-        // LES METHODS
         // LES CONSTRUCTEURS
         public Tableau(int dimension,bool istrie)
         {
@@ -125,6 +124,11 @@ namespace FonctionTableaux
             }
 
         }
+        /// <summary>
+        /// Donner la position du premier valeur trouvé
+        /// </summary>
+        /// <param name="valTrouv">Valeur à trouver</param>
+        /// <returns></returns>
         public int Trouver(string valTrouv)
         {
             int pos = 0;
@@ -138,6 +142,11 @@ namespace FonctionTableaux
             }
              return pos;
         }
+        /// <summary>
+        /// Tester si cette valeur existe dans le tableau
+        /// </summary>
+        /// <param name="valTrouv">Valeur à trouver</param>
+        /// <returns><code>true</code> si trouvé,  <code>false</code> sinon</returns>
         public bool Istrouv(string valTrouv)
         {
             bool resultat = false;
@@ -152,14 +161,35 @@ namespace FonctionTableaux
 
             return resultat;
         }
-        public void Fusionner()
+        /// <summary>
+        /// Concatener avec le quicksort
+        /// </summary>
+        /// <param name="T2">Tableau 2</param>
+        /// <returns><code>Tableau 3</code></returns>
+        public Tableau Fusionner(Tableau T2)
         {
-
+            int dim1 = this.NbrVal;
+            int dim2 = T2.NbrVal;
+            Tableau T3 = new Tableau(dim1 + dim2, true);
+            for (int i = 0; i < dim1; i++)
+            {
+                T3.Ajouter(this.Tab[i]);
+            }
+            for (int i = 0; i < dim2; i++)
+            {
+                T3.Ajouter(T2.Tab[i]);
+            }
+            return T3;
         }
-        public void trier()
+        public void Trier()
         {
-
+            QuickSort(this.Tab, int.Parse(Tab[0]), int.Parse(Tab[NbrVal]));
         }
+        /// <summary>
+        /// nombre de valeurs égal au parametre dans le tableau
+        /// </summary>
+        /// <param name="valTrouv"> valeur à trouver</param>
+        /// <returns>nombre d'occurence</returns>
         public int NbrOccurence(string valTrouv)
         {
             int compte = 0;
@@ -172,10 +202,50 @@ namespace FonctionTableaux
             }
             return compte;
         }
-        public void Concatener()
+        /// <summary>
+        /// ajouter le tableau 2 au tablau 1 sans fusion
+        /// </summary>
+        /// <param name="T2">tableau 2</param>
+        /// <returns>Tableau 3</returns>
+        public Tableau Concatener(Tableau T2)
         {
-
+            int dim1 = this.NbrVal;
+            int dim2 = T2.NbrVal;
+            Tableau T3 = new Tableau(dim1 + dim2, false);
+            for (int i = 0; i < dim1; i++)
+            {
+                T3.Ajouter(this.Tab[i]);
+            }
+            for (int i = 0; i < dim2; i++)
+            {
+                T3.Ajouter(T2.Tab[i]);
+            }
+            return T3;
         }
+        /// <summary>
+        /// inverser le tableau
+        /// </summary>
+        public void Inverser()
+        {
+            for (int i = 0; i < this.NbrVal / 2; i++)
+            {
+                int tmp = this.Tab[i];
+                this.Tab[i] = this.Tab[this.NbrVal - i - 1];
+                this.Tab[this.NbrVal - i - 1] = tmp;
+            }
+        }
+        /// <summary>
+        /// est'ce que le nombre de valeurs à droite et le meme à gauche
+        /// </summary>
+        /// <returns>true if symmetric, else false </returns>
+        public bool IsSymetric()
+        {
+            if (this.NbrVal % 2 == 0)
+                return true;
+            else
+                return false;
+        }
+
     } }
 
 
