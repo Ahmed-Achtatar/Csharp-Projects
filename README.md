@@ -1,6 +1,8 @@
 # Csharp-Projects:
-- First project is about a console static rpg game, in other words: role play game that only uses console commands.
-- I will add other projects soon... 
+- simple **webforms** CRUD interface using lists and LinQ  ;
+- **Tables** implementation like in C/C++ but in c#  ;
+- OOP using **Space Terms** (Point, Droit, Ellipse, Circle) ;
+- Anything other than that isn't complete... ;
 
 
 **Feel free to contribute, lets learn together :)** 
