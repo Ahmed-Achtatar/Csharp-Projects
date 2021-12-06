@@ -13,9 +13,9 @@ namespace WindowsFormsApp1
     public partial class Form1 : Form
     {
         // Les actions en cours
-        enum action { ADDING, DELETING, MODIFYING }
+        private enum action { ADDING, DELETING, MODIFYING }
         // Connection String
-        static string oradb = "Data Source =(DESCRIPTION =" +
+        private static string oradb = "Data Source =(DESCRIPTION =" +
             "(ADDRESS = (PROTOCOL = TCP)(HOST = localhost)(PORT = 1521))" +
             "(CONNECT_DATA =" +
             "(SERVER = DEDICATED)" +
@@ -23,9 +23,10 @@ namespace WindowsFormsApp1
             "User Id=c##usernam;" +
             "Password=password;";
         // Instantiation du connection à la base de données de oracle
-        OracleConnection conn = new OracleConnection(oradb);
+
+        Connection conn = new Connection();
         // Instantiation du commande
-        OracleCommand cmd = new OracleCommand(oradb);
+
         // l'Action en cours
         int currentaction;
 
@@ -33,37 +34,19 @@ namespace WindowsFormsApp1
         public Form1()
         {
             InitializeComponent();
-            conn.Open();
-            Updatelist();
-            BackToVisualisation();
-            conn.Close();
+            Connection conn = new Connection();
 
+            conn.List(listEtudiant);
+            BackToVisualisation();
+
+            
         }
         //
         private void listEtudiant_SelectedIndexChanged(object sender, EventArgs e)
         {
 
-            
             BackToVisualisation();
-            conn.Open();
-
-            // REQUETE SQL
-
-            cmd.CommandText = "Select nom,prenom,note,ville FROM students WHERE idstudent = " + listEtudiant.SelectedItem.ToString();
-            OracleDataReader dr = cmd.ExecuteReader();
-            if (dr.HasRows)
-            {
-                while (dr.Read())
-                {
-                    // AJOUT DE DONNEES DANS LES TEXTBOXS
-                    nomTxtBox.Text = dr["nom"].ToString();
-                    prenomTextBox.Text = dr["prenom"].ToString();
-                    noteTextBox.Text = dr["note"].ToString();
-                    villeTextBox.Text = dr["ville"].ToString();
-                }
-                
-            }
-            conn.Close();
+            conn.Read(listEtudiant.SelectedItem.ToString());
         }
 
         private void label1_Click(object sender, EventArgs e)
@@ -78,7 +61,7 @@ namespace WindowsFormsApp1
   
         private void Valider_Click(object sender, EventArgs e)
         {
-            conn.Open();
+ 
 
             // ETAT D AJOUT
             if (currentaction == (int)action.ADDING)
@@ -86,14 +69,11 @@ namespace WindowsFormsApp1
                 // SI TOUT LES TEXTBOX SONT REMPLIS
                 if (!(string.IsNullOrEmpty(nomTxtBox.Text) || string.IsNullOrEmpty(prenomTextBox.Text) || string.IsNullOrEmpty(noteTextBox.Text)))
                 {
-                    cmd.CommandText = "Insert into students(idstudent, nom, prenom, note, ville) Values(STUD_SEQ.nextval,'" +
-                        nomTxtBox.Text + "','" +
-                        prenomTextBox.Text + "','" +
-                        noteTextBox.Text + "','" +
-                        villeTextBox.Text + "')";
-                    cmd.ExecuteReader();
-                    Updatelist();
+
+                    conn.Ajouter(nomTxtBox.Text, prenomTextBox.Text,noteTextBox.Text, villeTextBox.Text);
+                    conn.List(listEtudiant);
                     BackToVisualisation();
+                    
                 }
                 else
                 {
@@ -105,9 +85,8 @@ namespace WindowsFormsApp1
             // ETAT DE SUPPRESSION
             if (currentaction == (int)action.DELETING)
             {
-                cmd.CommandText = "Delete from students where idstudent =" + listEtudiant.SelectedItem.ToString();
-                cmd.ExecuteReader();
-                Updatelist();
+                conn.supprimer(listEtudiant.SelectedItem.ToString());
+                conn.List(listEtudiant);
                 BackToVisualisation();
             }
 
@@ -117,14 +96,9 @@ namespace WindowsFormsApp1
                 // SI LES TEXTBOX SONT TOUS REMPLIS
                 if (!(string.IsNullOrEmpty(nomTxtBox.Text) || string.IsNullOrEmpty(prenomTextBox.Text) || string.IsNullOrEmpty(noteTextBox.Text)))
                 {
-                    cmd.CommandText = "Update students set " + 
-                        " nom = '" + nomTxtBox.Text + "',"+
-                        " prenom = '" + prenomTextBox.Text + "'," +
-                        " note = '" + noteTextBox.Text + "'," +
-                        " ville = '" + villeTextBox.Text + "'" +
-                        " Where idstudent = " + listEtudiant.SelectedItem.ToString();
-                    cmd.ExecuteReader();
-                    Updatelist();
+
+                    conn.Modifier(listEtudiant.SelectedItem.ToString(), nomTxtBox.Text, prenomTextBox.Text, noteTextBox.Text, villeTextBox.Text);
+                    conn.List(listEtudiant);
                     BackToVisualisation();
                 }
                 else
@@ -133,7 +107,7 @@ namespace WindowsFormsApp1
                     Message.ForeColor = System.Drawing.Color.Red;
                 }
             }
-            conn.Close();
+
         }
 
         private void Annuler_Click(object sender, EventArgs e)
@@ -143,7 +117,7 @@ namespace WindowsFormsApp1
 
         private void Supprimer_Click(object sender, EventArgs e)
         {
-            GoToVisualisation();
+            GoFromVisualisation();
             // CHANGEMENT D ETAT DE BUTTONS ET BOXS 
             nomTxtBox.Enabled = false;
             prenomTextBox.Enabled = false;
@@ -158,7 +132,7 @@ namespace WindowsFormsApp1
 
         private void Modifier_Click(object sender, EventArgs e)
         {
-            GoToVisualisation();
+            GoFromVisualisation();
             // CHANGEMENT D ETAT DE BUTTONS ET BOXS
             nomTxtBox.Enabled = true;
             prenomTextBox.Enabled = true;
@@ -173,7 +147,7 @@ namespace WindowsFormsApp1
 
         private void Ajouter_Click(object sender, EventArgs e)
         {
-            GoToVisualisation();
+            GoFromVisualisation();
             CleanTxtBoxes();
             // CHANGEMENT D ETAT DE BUTTONS ET BOXS
             nomTxtBox.Enabled = true;
@@ -228,22 +202,6 @@ namespace WindowsFormsApp1
             }
             currentaction = -1;
         }
-        void Updatelist()
-        {
-            // REFLECHIR LE COMBOBOX
-            listEtudiant.Items.Clear();
-            cmd.CommandText = "select * from students";
-            cmd.Connection = conn;
-            
-            OracleDataReader dr = cmd.ExecuteReader();
-            if (dr.HasRows)
-            {
-                while (dr.Read())
-                {
-                    listEtudiant.Items.Add(dr["idstudent"]);
-                }
-
-            }
-        }
+        
     }
 }
